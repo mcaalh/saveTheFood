@@ -29,8 +29,10 @@ export default class Login extends Component {
             this.props.navigation.navigate('map');
         }
     }
+    onAuthComplete = () => {
+        this.props.navigation.navigate("map");
+    }
     render() {
-        const { navigate } = this.props.navigation;
         return (
             <KeyboardAvoidingView style={styles.wrapper}>
 
@@ -49,8 +51,7 @@ export default class Login extends Component {
                     />
                     <TouchableOpacity
                         style={styles.btn}
-                        onPress={ () => navigate('map')}
-                        // onPress={this.login}
+                        onPress={this.onAuthComplete}
                         >
                         <Text>Log in</Text>
                     </TouchableOpacity>

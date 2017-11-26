@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
+import Meteor from 'react-native-meteor';
 
 import store from './store';
 import  Navigation from './src/config/routes';
 
-export default class App extends React.Component {
+const SERVER_URL = 'ws://localhost:3000/websocket';
+
+export default class App extends Component {
+
+  componentWillMount() {
+    Meteor.connect(SERVER_URL);
+  }
   
   render() {
     return (
