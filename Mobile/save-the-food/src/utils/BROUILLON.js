@@ -1,95 +1,130 @@
 import React, { Component } from 'react';
 import {
-    AppRegistry,
-    StyleSheet,
+    View,
     Text,
-    View
+    Button,
+    Image,
+    TouchableOpacity,
+    FlatList,
+    Dimensions,
+    TouchableWithoutFeedback,
+    Animated
 } from 'react-native';
-
-import Swiper from 'react-native-swiper';
-
-var styles = StyleSheet.create({
-    wrapper: {
-    },
-    slide1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9DD6EB',
-    },
-    slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5',
-    },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9',
-    },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold',
-    }
-})
-
-var swiper = React.createClass({
-    render: function () {
-        return (
-            <Swiper style={styles.wrapper} showsButtons={true}>
-                <View style={styles.slide1}>
-                    <Text style={styles.text}>Hello Swiper</Text>
-                </View>
-                <View style={styles.slide2}>
-                    <Text style={styles.text}>Beautiful</Text>
-                </View>
-                <View style={styles.slide3}>
-                    <Text style={styles.text}>And simple</Text>
-                </View>
-            </Swiper>
-        )
-    }
-})
-
-AppRegistry.registerComponent('myproject', () => swiper);
-
-
-
-
-import React, { Component } from 'react';
-import { View, Text, Button, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ProductItem from '../components/ProductItem'
 
 import { MyColor } from '../utils/constants';
+import Meteor, { createContainer } from 'react-native-meteor';
 
-import Slides from '../components/Slides';
-import WelcomeSlide from '../components/WelcomeSlideParallax.js'
 
-const SLIDE_DATA = [
-    { text: 'Welcome to SaveFood', color: MyColor.GREEN },
-    { text: 'Set your location to find local store', color: MyColor.GREEN },
-    { text: 'GO!', color: MyColor.GREEN }
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
-]
+class ProductSreen extends Component {
 
-class WelcomeScreen extends Component {
-    static navigationOptions = {
-        tabBarLabel: 'Auth',
-        tabBarVisible: false,
+    constructor(props) {
+        super(props);
+
+        Meteor.subscribe('productsData');
+        this.state = {
+            animatePress: new Animated.Value(1),
+            loading: true,
+            error: '',
+            products: {},
+        };
     }
 
-    onSlidesComplete = () => {
-        this.props.navigation.navigate("auth");
+    componentDidMount() {
+        // const params = { name: this.props.navigation.state.params.name };
+        Meteor.collection('products').find({}, (err, products) => {
+            if (err) {
+                // console.log()
+                this.setState({ error: err.reason });
+            } else {
+                console.log(products);
+                this.setState({ error: '', products: products });
+            }
+            this.setState({ loading: false });
+        });
+    }
+
+    static navigationOptions = {
+        // tabBarLabel: 'Product',
+
+        tabBarIcon: ({ tintColor }) => (
+            <Icon
+                name='ios-nutrition'
+                color={tintColor}
+                size={40}
+            />
+        ),
+    }
+
+    state = {
+        columns: 2
+    }
+
+    handleAddItem() {
+        console.log('Product: Handle Add product');
+        const data = {
+            name: "product",
+            price: "50 euros",
+            picture: "http://www.fredsinc.com/wp-content/uploads/2016/10/Page-Header-Grocery-20161019.png"
+        }
+        Meteor.call('createNewProduct', data, (err, res) => {
+            // Do whatever you want with the response
+            console.log('createNewCompany', err, res);
+        });
     }
 
     render() {
+        const { columns } = this.state;
         return (
-            <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
+            <View style={styles.container}>
+                <FlatList
+                    numColumns={2}
+                    data={this.state.products}
+                    renderItem={({ item }) => {
+                        return <ProductItem itemWidth={(SCREEN_WIDTH - 20) / columns} data={item} />
+                    }}
+                    keyExtractor={
+                        (index) => {
+                            return index
+                        }
+                    }
+                >
+
+                    {/*
+                        {this.props.products.map((item, index) => {
+                            return <ProductItem data={item} key={index}/>
+                    })}
+                */}
+                    {/* Removed for brevity */}
+                    {/*<TouchableOpacity style={styles.button} onPress={this.handleAddItem}>
+                    <Text>Add Item</Text>
+                </TouchableOpacity>*/}
+                </FlatList>
+            </View>
         );
     }
 }
 
-export default WelcomeScreen;
+const styles = {
+    container: {
+        flex: 1,
+        flexDirection: 'column',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // width: SCREEN_WIDTH,
+        backgroundColor: '#F5FCFF'
+    },
+}
+
+
+// export default createContainer(() => {
+//     Meteor.subscribe('productsData');
+//     console.log(Meteor.collection('products').find());
+//     return {
+//         products: Meteor.collection('products').find(),
+//     };
+// }, ProductSreen);
+export default ProductSreen;

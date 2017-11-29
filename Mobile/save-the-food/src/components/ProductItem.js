@@ -13,8 +13,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { MyColor } from '../utils/constants';
 
-class ProductItem extends Component {
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
+class ProductItem extends Component {
+    
     state = {
         animatePress: new Animated.Value(1)
     }
@@ -33,6 +35,7 @@ class ProductItem extends Component {
     }
 
     render() {
+        const column = this.props.column; 
         return (
             <TouchableWithoutFeedback
                 onPressIn={() => this.animateIn()}
@@ -46,29 +49,30 @@ class ProductItem extends Component {
                         }
                     ]
                 }}>
-                    <Image style={styles.imgContent} source={{ uri: this.props.data.picture }}>
+                    <Image style={{ width: column, height: 100}} source={{ uri: this.props.data.picture }}>
                     </Image>
-                    <Text>{this.props.data.price}</Text>
+                    <Text>{this.props.data.price} </Text>
                 </Animated.View>
             </TouchableWithoutFeedback>
         )
     }
 }
 
-const styles = {
-    imgContainer: {
-        margin: 5,
-        width: 200,
-        height: 100,
-        backgroundColor: MyColor.ORANGE,
-        paddingBottom: 2,
+// const styles = {
+//     imgContainer: {
+//         margin: 5,
+//         width: 200,
+//         height: 100,
+//         backgroundColor: MyColor.ORANGE,
+//         paddingBottom: 2,
 
-    },
-    imgContent: {
-        flex: 1,
-        height: 100
-    }
-}
+//     },
+//     imgContent: {
+//         // flex: 1,
+//         width: null,
+//         height: 100
+//     }
+// }
 
 // export default createContainer(() => {
 //     Meteor.subscribe('productsData');

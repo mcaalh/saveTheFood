@@ -13,8 +13,8 @@ export default class StoreHeader extends Component {
     render() {
         return (
             
-                <Image style={styles.top} source={require('../../assets/images/storePage/store0.jpg')}>
-                </Image>
+            <Image style={styles.top} source={require('../../assets/images/storePage/store0.jpg')}>
+            </Image>
             
         )
     }

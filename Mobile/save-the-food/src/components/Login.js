@@ -26,11 +26,11 @@ export default class Login extends Component {
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('user');
         if (value !== null) {
-            this.props.navigation.navigate('map');
+            this.props.navigation.navigate('product');
         }
     }
     onAuthComplete = () => {
-        this.props.navigation.navigate("map");
+        this.props.navigation.navigate("product");
     }
     render() {
         return (
@@ -62,7 +62,7 @@ export default class Login extends Component {
     }
     login = () => {
 
-        alert(this.state.username);
+        alert("test");
         
 
         // fetch('http://127.0.0.1:8080/users', {

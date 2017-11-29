@@ -20,20 +20,10 @@ import Meteor, { createContainer } from 'react-native-meteor';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class ProductSreen extends Component {
-    // static navigationOptions = {
-    //     // tabBarLabel: 'Product',
-        
-    //     tabBarIcon: ({ tintColor }) => (
-    //         <Icon
-    //             name= 'ios-nutrition'
-    //             color = { tintColor }
-    //             size  = {40}
-    //             />
-    //     ),
-    // }
+    
 
     state = {
-        animatePress: new Animated.Value(1)
+        columns : 2
     }
 
     handleAddItem() {
@@ -50,25 +40,18 @@ class ProductSreen extends Component {
     }
 
     render() {
+        // const { columns } = this.state;
         return ( 
             <View style={styles.container}>
                 <FlatList
+                    numColumns={2}
                     data = {this.props.products}
                     renderItem={({item}) => {
-                        return <ProductItem data={item}/>
+                        return <ProductItem column={(SCREEN_WIDTH - 20)/this.state.columns} data={item}/>
                     }}
-                    keyExtractor = {
-                        (index) => {
-                            return index
-                        }
-                    }
+                    keyExtractor={(item, index) => index}
                 >
 
-                {/*
-                        {this.props.products.map((item, index) => {
-                            return <ProductItem data={item} key={index}/>
-                    })}
-                */}
                 {/* Removed for brevity */}
                 {/*<TouchableOpacity style={styles.button} onPress={this.handleAddItem}>
                     <Text>Add Item</Text>
@@ -82,19 +65,43 @@ class ProductSreen extends Component {
 const styles = {
     container: {
         flex: 1,
+        // marginTop: 15,
+        // flexDirection: 'column',
         // justifyContent: 'center',
-        // alignItems: 'center',
+        alignItems: 'center',
         // width: SCREEN_WIDTH,
         backgroundColor: '#F5FCFF'
     },
 }
 
 
-export default createContainer(() => {
-    Meteor.subscribe('productsData');
-    console.log(Meteor.collection('products').find());
-    return {
-        products: Meteor.collection('products').find(),
-    };
+const container = createContainer((params) => {
+    const handle = Meteor.subscribe('productsData');
+    console.log(handle);
+    return ({
+        ready: handle.ready(),
+        products: Meteor.collection('products').find()
+    });
 }, ProductSreen);
-// export default ProductSreen;
+
+    container.navigationOptions = {
+    tabBarLabel: ' ',
+    showLabel: false,
+
+    tabBarIcon: ({ tintColor }) => (
+        <Icon
+            name='ios-nutrition'
+            color={tintColor}
+            size={40}
+        />
+    ),
+}
+
+// export default createContainer(() => {
+//     Meteor.subscribe('productsData');
+//     console.log(Meteor.collection('products').find());
+//     return {
+//         products: Meteor.collection('products').find(),
+//     };
+// }, ProductSreen);
+export default container;

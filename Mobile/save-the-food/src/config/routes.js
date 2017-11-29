@@ -15,8 +15,8 @@ import SettingsScreen from '../screens/SettingsScreen';
 import ReviewScreen from '../screens/ReviewScreen';
 
 const Navigation = TabNavigator({
-    welcome: { screen: WelcomeScreen },
-    auth: { screen: AuthScreen }, 
+    // welcome: { screen: WelcomeScreen },
+    // auth: { screen: AuthScreen }, 
     main: {
         screen: TabNavigator({
             product: { screen: ProductScreen },
@@ -27,15 +27,18 @@ const Navigation = TabNavigator({
         }, {
             tabBarPosition: 'bottom',
             tabBarOptions: {
-                labelStyle: { fontSize: 12 }
+                labelStyle: { fontSize: 12 },
+                activeTintColor: MyColor.ORANGE,
+                showLabel: false,
             }
         })
     }  
 }, {
     navigationOptions: {
-        tabBarVisible: true 
+        tabBarVisible: false,
+        
     },
-    lazyLoad: true
+    lazyLoad: true,
 });
 
 export default Navigation;
