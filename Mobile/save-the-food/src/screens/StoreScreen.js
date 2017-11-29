@@ -14,7 +14,7 @@ export default class StoreScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <StoreHeader/>
+                <StoreHeader />
                 <StoreNav />
                 <StoreProducts />
             </View>
@@ -25,6 +25,7 @@ export default class StoreScreen extends Component {
 const styles = {
     container: {
         flex: 1,
-        backgroundColor: "#f4f4f4"
+        backgroundColor: "black"
     },
+    
 }

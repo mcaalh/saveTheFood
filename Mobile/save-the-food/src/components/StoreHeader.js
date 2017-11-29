@@ -12,9 +12,9 @@ import { MyColor } from '../utils/constants';
 export default class StoreHeader extends Component {
     render() {
         return (
-            <Image style={styles.top} source={require('../../assets/images/storePage/store0.jpg')}>
-                
-            </Image>
+            
+                <Image style={styles.top} source={require('../../assets/images/storePage/store0.jpg')}>
+                </Image>
             
         )
     }
@@ -22,7 +22,7 @@ export default class StoreHeader extends Component {
 
 const styles = {
     top: {
-        height: '30%',
+        height: '40%',
         width: null,
         alignItems: 'center',
         justifyContent: 'center',

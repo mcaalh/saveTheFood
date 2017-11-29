@@ -1,6 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { 
+    View, 
+    Text, 
+    Button, 
+    Image, 
+    TouchableOpacity,
+    FlatList,
+    Dimensions,
+    TouchableWithoutFeedback,
+    Animated 
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import ProductItem from '../components/ProductItem'
 
 import { MyColor } from '../utils/constants';
 import Meteor, { createContainer } from 'react-native-meteor';
@@ -20,11 +31,17 @@ class ProductSreen extends Component {
     //             />
     //     ),
     // }
+
+    state = {
+        animatePress: new Animated.Value(1)
+    }
+
     handleAddItem() {
         console.log('Product: Handle Add product');
         const data = {
             name: "product",
-            price: "50 euros"
+            price: "50 euros",
+            picture: "http://www.fredsinc.com/wp-content/uploads/2016/10/Page-Header-Grocery-20161019.png"
         }
         Meteor.call('createNewProduct', data, (err, res) => {
             // Do whatever you want with the response
@@ -35,16 +52,28 @@ class ProductSreen extends Component {
     render() {
         return ( 
             <View style={styles.container}>
-                <View style={styles.instructions}>
-                   {this.props.products.map((item) => {
-                       return <Text>{item.name}</Text>
-                   })}
-                </View>
+                <FlatList
+                    data = {this.props.products}
+                    renderItem={({item}) => {
+                        return <ProductItem data={item}/>
+                    }}
+                    keyExtractor = {
+                        (index) => {
+                            return index
+                        }
+                    }
+                >
 
+                {/*
+                        {this.props.products.map((item, index) => {
+                            return <ProductItem data={item} key={index}/>
+                    })}
+                */}
                 {/* Removed for brevity */}
-                <TouchableOpacity style={styles.button} onPress={this.handleAddItem}>
+                {/*<TouchableOpacity style={styles.button} onPress={this.handleAddItem}>
                     <Text>Add Item</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>*/}
+                </FlatList>
             </View>
         );
     }
@@ -53,10 +82,11 @@ class ProductSreen extends Component {
 const styles = {
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: SCREEN_WIDTH
-    }
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // width: SCREEN_WIDTH,
+        backgroundColor: '#F5FCFF'
+    },
 }
 
 

@@ -6,7 +6,7 @@ import Meteor from 'react-native-meteor';
 import store from './store';
 import  Navigation from './src/config/routes';
 
-const SERVER_URL = 'ws://localhost:3000/websocket';
+const SERVER_URL = 'ws://localhost:3030/websocket';
 
 export default class App extends Component {
 

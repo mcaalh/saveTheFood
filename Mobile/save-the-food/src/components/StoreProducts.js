@@ -5,52 +5,41 @@ import {
     Text,
     View,
     Image,
-    ImageBackground
+    Dimensions,
+    ScrollView
 } from 'react-native';
 import { MyColor } from '../utils/constants';
 
 export default class StoreProduct extends Component {
     render() {
         return (
-            <View style={styles.bottom}>
-                <View style={styles.bottomItem}>
-                    <View style={styles.bottomItemInner}></View>
+            <ScrollView> 
+                <View style={styles.photoGrid}>
+                    <View style={styles.photowrap}>
+                        <Image style={styles.photo} source={require('../../assets/images/storePage/affiche.jpg')}/>
+                    </View>
+                    <View style={styles.photowrap}>
+                        <Image style={styles.photo} source={require('../../assets/images/storePage/store.jpg')} />
+                    </View>
                 </View>
-                <View style={styles.bottomItem}>
-                    <View style={styles.bottomItemInner}></View>
-                </View>
-                <View style={styles.bottomItem}>
-                    <View style={styles.bottomItemInner}></View>
-                </View>
-                <View style={styles.bottomItem}>
-                    <View style={styles.bottomItemInner}></View>
-                </View>
-                <View style={styles.bottomItem}>
-                    <View style={styles.bottomItemInner}></View>
-                </View>
-                <View style={styles.bottomItem}>
-                    <View style={styles.bottomItemInner}></View>
-                </View>
-            </View>
+            </ScrollView>
         )
     }
 }
 
 const styles = {
-    bottom: {
-        height: '45%',
-        backgroundColor: "#f4f4f4",
+    photoGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        padding: 5,
     },
-    bottomItem: {
-        width: '50%',
-        height: '50%',
-        padding: 5
+    photoWrap: {
+        margin: 2,
+        height: 120,
+        width: (Dimensions.get('window').width / 2) - 4
     },
-    bottomItemInner: {
+    photo: {
         flex: 1,
-        backgroundColor: "black"
+        // width: null,
+        alignSelf: 'stretch'
     }
 }
